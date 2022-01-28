@@ -4,6 +4,7 @@ from telebot import types
 
 bot = telebot.TeleBot(key.token)
 
+
 @bot.message_handler(commands=['start'])
 def cmd_start(message):
     start_keyboard = types.InlineKeyboardMarkup()
@@ -12,12 +13,14 @@ def cmd_start(message):
     start_keyboard.add(PENTAGON, LIFE)
     bot.send_message(message.chat.id, "Выберай", reply_markup=start_keyboard)
 
+
 @bot.callback_query_handler(func=lambda c: c.data)
 def answer_callback(callback):
     if callback.data == "VP":
-        start_keyboard = types.InlineKeyboardMarkup()
+        start_keyboard = types.InlineKeyboardMarkup(row_width=1)
         btn_my_site = types.InlineKeyboardButton(text='Результат', url='https://www.defense.gov/')
-        start_keyboard.add(btn_my_site)
+        bonus = types.InlineKeyboardButton(text='Бери по акции (и за красивые глаза)', url='https://nuclearsecrecy.com/nukemap/')
+        start_keyboard.add(btn_my_site, bonus)
         bot.send_message(callback.message.chat.id, "На те", reply_markup=start_keyboard)
     elif callback.data == 'LH':
         markup = types.InlineKeyboardMarkup()
